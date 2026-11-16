@@ -1,0 +1,211 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap'); 
+
+:root {
+  --primary:          #E8642A;
+  --secondary:        #F2A65A;
+  --accent:           #F06292;
+  --accent-light:     #FADADD;
+  --background:       #FFF8F2;
+  --surface:          #FFFFFF;
+  --text-primary:     #3D1C02;
+  --text-secondary:   #7A4A2A;
+  --text-muted:       #B07850;
+  --border:           #F2D0B0;
+  --shadow:           rgba(232, 100, 42, 0.12);
+  
+  /* Unified Global Radii tokens synced across all app pages */
+  --border-radius-sm:   8px;
+  --border-radius-md:   14px;
+  --border-radius-lg:   20px;
+  --border-radius-full: 999px;
+}
+ 
+/* --- Reset --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+ 
+/* --- Base --- */
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  font-family: 'Inter', sans-serif; /* Swapped to Inter to match default app typeface */
+  background-color: var(--background);
+  color: var(--text-primary);
+  overflow: hidden; /* FIXED: Latch to freeze layout viewport and kill accidental scrollbars */
+}
+
+body {
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+ 
+/* --- Button --- */
+.btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 24px;
+  border-radius: var(--border-radius-full);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+ 
+.btn-primary {
+  background-color: var(--primary);
+  color: #ffffff;
+}
+ 
+.btn-primary:hover {
+  background-color: var(--secondary);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--shadow);
+}
+ 
+.w-full { width: 100%; }
+ 
+/* --- Input Fields --- */
+input {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--text-primary);
+  background-color: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--border-radius-sm);
+  padding: 10px 14px;
+  width: 100%;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+ 
+input::placeholder {
+  color: var(--text-muted);
+}
+ 
+input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(232, 100, 42, 0.15);
+}
+ 
+/* --- Full screen wrapper --- */
+.login-wrapper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden; /* Keeps the floating animation path bound inside screen limits */
+  background-color: var(--background);
+}
+ 
+/* --- Login card --- */
+.login-card {
+  position: relative;
+  z-index: 1;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-lg);
+  padding: 48px 44px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 24px var(--shadow);
+  animation: fadeIn 0.8s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+ 
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+ 
+/* --- Logo --- */
+.logo-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.mascot {
+  width: 70px;   
+  height: auto;  
+  margin-bottom: 8px;
+}
+ 
+/* --- Form group --- */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+ 
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+ 
+/* --- Error message --- */
+.error-msg {
+  font-size: 12px;
+  color: var(--accent);
+  margin-top: -8px;
+}
+ 
+/* --- Sign up caption --- */
+.signup-caption {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  text-align: left;
+}
+ 
+.signup-caption a {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+ 
+.signup-caption a:hover {
+  color: var(--secondary);
+}
+ 
+/* --- Floating popcorns --- */
+.popcorn-float {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+ 
+.pop {
+  position: absolute;
+  font-size: 28px;
+  opacity: 0.18;
+  animation: floatUp 6s ease-in-out infinite;
+}
+ 
+.p1 { left: 8%;  bottom: -40px; animation-delay: 0s;   animation-duration: 6s; }
+.p2 { left: 22%; bottom: -40px; animation-delay: 1.2s; animation-duration: 7s; }
+.p3 { left: 45%; bottom: -40px; animation-delay: 0.5s; animation-duration: 5.5s; }
+.p4 { left: 63%; bottom: -40px; animation-delay: 1.8s; animation-duration: 6.5s; }
+.p5 { left: 78%; bottom: -40px; animation-delay: 0.9s; animation-duration: 7.5s; }
+.p6 { left: 90%; bottom: -40px; animation-delay: 2.2s; animation-duration: 5s; }
+ 
+@keyframes floatUp {
+  0%   { transform: translateY(0px)    rotate(0deg);  opacity: 0.18; }
+  50%  { transform: translateY(-60vh)  rotate(15deg); opacity: 0.25; }
+  100% { transform: translateY(-100vh) rotate(-10deg); opacity: 0; }
+}

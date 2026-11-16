@@ -1,0 +1,518 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap');
+
+:root {
+  --primary: #E8642A;
+  --secondary: #F2A65A;
+  --accent: #F06292;
+  --background: #FFF8F2;
+  --surface: #FFFFFF;
+  --text-primary: #3D1C02;
+  --text-secondary: #7A4A2A;
+  --text-muted: #B07850;
+  --border: #F2D0B0;
+  --shadow: rgba(232, 100, 42, 0.12);
+}
+
+/* =========================================================================
+   1. CORE PAGE LAYOUT CONTAINER
+   ========================================================================= */
+.recs-page {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--background);
+}
+
+.recs-main {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  overflow-y: auto;
+}
+
+/* =========================================================================
+   2. DASHBOARD HERO CARD BANNER
+   ========================================================================= */
+.recs-main .hero-section {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 24px 32px;
+  width: 100%;
+  box-shadow: 0 4px 20px var(--shadow);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+
+}
+
+.recs-main .hero-section::before {
+  content: none !important;
+  display: none !important;
+}
+
+.recs-main .hero-text h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.recs-main .hero-text p {
+  color: var(--text-secondary);
+  margin-top: 8px;
+  font-size: 16px;
+}
+
+/* =========================================================================
+   3. FILTER BAR CONTROLLER LAYOUT
+   ========================================================================= */
+.filter-controls-container {
+  display: flex;
+  align-items: center;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 12px 20px;
+  gap: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.filter-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.filter-divider {
+  width: 1px;
+  height: 24px;
+  background-color: var(--border);
+  flex-shrink: 0;
+}
+
+.filter-pill,
+.genre-pill {
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.filter-pill:hover,
+.genre-pill:hover {
+  background-color: var(--surface);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.filter-pill.active,
+.genre-pill.active {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: var(--surface);
+  box-shadow: 0 4px 10px rgba(232, 100, 42, 0.2);
+}
+
+/* =========================================================================
+   4. RECOMMENDATIONS 2-COLUMN UNIFORM GRID
+   ========================================================================= */
+.recs-grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+  align-items: stretch;
+  /* Forces equal heights per card column row */
+}
+
+.recs-wrapper-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px !important;
+  overflow: hidden;
+  padding: 28px;
+  box-shadow: 0 4px 16px var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.recs-wrapper-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(232, 100, 42, 0.15);
+}
+
+/* Reasoning Context Card Header Elements */
+.recs-reason-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px dashed var(--border);
+  padding-bottom: 16px;
+  flex-shrink: 0;
+}
+
+.reason-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.context-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.media-badge {
+  color: var(--accent);
+  background-color: var(--accent-light);
+  font-size: 12px;
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(242, 208, 176, 0.5);
+  flex-shrink: 0;
+  font-weight: 600;
+}
+
+.add-to-watchlist-button {
+  background-color: var(--primary);
+  color: var(--surface);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.add-to-watchlist-button:hover {
+  background-color: var(--secondary);
+}
+
+.add-to-watchlist-button.added {
+  background-color: var(--accent);
+  cursor: default;
+}
+
+/* =========================================================================
+   5. MOVIECARD INNER LINKAGE LAYOUT
+   ========================================================================= */
+.recs-card-body {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Enforce children components expand to match boundaries uniformly */
+.recs-card-body .movie-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* =========================================================================
+   6. EMPTY BOUNDARY RENDER FALLBACK STATE
+   ========================================================================= */
+.empty-results-fallback {
+  text-align: center;
+  padding: 60px 20px;
+  background-color: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: 20px;
+  color: var(--text-secondary);
+  font-size: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.reset-filters-btn {
+  background-color: transparent;
+  border: none;
+  color: var(--primary);
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Responsive collapse alignment overrides */
+@media (max-width: 1150px) {
+  .recs-grid-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .recs-main .hero-text h1 {
+    font-size: 22px;
+  }
+}
+
+.empty-rec-card {
+  flex: 1;
+  /* Forces the dashed container to expand and fill the entire card height */
+  width: 100%;
+  box-sizing: border-box;
+  padding: 32px 24px;
+  background-color: var(--background);
+  border: 2px dashed var(--border);
+  border-radius: var(--border-radius-md);
+
+  /* Uses CSS Grid layout with proportional fractional (fr) sizing rows */
+  display: grid;
+  grid-template-rows: 1.2fr auto auto 1fr;
+  align-items: center;
+  justify-items: center;
+}
+
+.placeholder-mascot-img {
+  grid-row: 1;
+  width: 95px;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 12px;
+  animation: float 3s ease-in-out infinite;
+}
+
+.empty-rec-card h3 {
+  grid-row: 2;
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  color: var(--text-primary);
+  margin: 0 0 12px 0;
+  padding: 0;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.empty-rec-card p {
+  grid-row: 3;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  max-width: 340px;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.empty-rec-card em {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+/* =================
+7. LOADING STATE
+   =================== */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 70px 20px;
+  gap: 18px;
+}
+
+/* Mascot with a pulsing halo behind it */
+.loading-mascot-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 90px;
+}
+
+.loading-pulse-ring {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+  opacity: 0.35;
+  animation: loading-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes loading-pulse {
+
+  0%,
+  100% {
+    transform: scale(0.85);
+    opacity: 0.2;
+  }
+
+  50% {
+    transform: scale(1.15);
+    opacity: 0.45;
+  }
+}
+
+.loading-state-icon {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+  animation: loading-bounce 1.2s ease-in-out infinite;
+}
+
+@keyframes loading-bounce {
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(-3deg);
+  }
+
+  50% {
+    transform: translateY(-14px) rotate(3deg);
+  }
+}
+
+/* Cycling status message fades in each time it changes (via React key) */
+.loading-message {
+  color: var(--text-muted);
+  font-size: 15px;
+  font-weight: 500;
+  min-height: 20px;
+  text-align: center;
+  animation: loading-fade 0.5s ease;
+}
+
+@keyframes loading-fade {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Three bouncing dots */
+.loading-dots {
+  display: flex;
+  gap: 7px;
+}
+
+.loading-dots span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  animation: loading-dot 1.2s ease-in-out infinite;
+}
+
+.loading-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes loading-dot {
+
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+
+  50% {
+    transform: translateY(-8px);
+    opacity: 1;
+  }
+}
+
+.mobile-bottom-spacer {
+  height: 100px;
+}
+
+@media (min-width: 901px) {
+  .mobile-bottom-spacer {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .recs-page {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+    overflow-anchor: none;
+  }
+
+  .recs-main {
+    padding: 20px;
+    overflow: visible;
+    overflow-anchor: none;
+  }
+
+  .recs-main .hero-text h1 {
+    font-size: 22px;
+  }
+}
+
+/* =========================================================================
+   TABLET RESPONSIVE (ipad landscape)
+   ========================================================================= */
+
+@media (min-width: 901px) and (max-width: 1280px) {
+  .recs-page .main-content {
+    padding: 32px;
+  }
+
+  .recs-page .hero-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 24px;
+    height: auto;
+    overflow: visible;
+  }
+
+  .recs-page .hero-text {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .recs-page .hero-text h1 {
+    font-size: 26px;
+    text-align: left;
+  }
+
+  .recs-page .hero-text p {
+    font-size: 15px;
+    text-align: left;
+  }
+
+}

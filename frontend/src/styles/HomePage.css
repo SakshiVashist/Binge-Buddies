@@ -1,0 +1,717 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap');
+
+:root {
+  --primary: #E8642A;
+  --secondary: #F2A65A;
+  --accent: #F06292;
+  --accent-light: #FADADD;
+  --background: #FFF8F2;
+  --surface: #FFFFFF;
+  --text-primary: #3D1C02;
+  --text-secondary: #7A4A2A;
+  --text-muted: #B07850;
+  --border: #F2D0B0;
+  --shadow: rgba(232, 100, 42, 0.12);
+
+  /* Unified Global Radii tokens */
+  --border-radius-sm: 8px;
+  --border-radius-md: 14px;
+  --border-radius-lg: 20px;
+  --border-radius-full: 999px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--background);
+  color: var(--text-primary);
+  overflow: hidden;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+.homepage {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  overflow: visible;
+  background-color: var(--background);
+}
+
+.main-content {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  overflow-y: auto;
+}
+
+/* =========================================================================
+   HERO SECTION
+   ========================================================================= */
+.hero-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--surface);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border);
+  padding: 24px 32px;
+  box-shadow: 0 4px 20px var(--shadow);
+  position: relative;
+  overflow: hidden;
+  min-height: max-content;
+}
+
+.hero-section::before {
+  content: "";
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, var(--accent-light) 0%, transparent 70%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-text,
+.streak-card {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-text h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+.hero-text h1 span {
+  color: var(--primary);
+}
+
+.hero-text p {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 520px;
+  line-height: 1.5;
+}
+
+/* =========================================================================
+   BINGE STREAK WIDGET ROUNDING
+   ========================================================================= */
+.streak-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: linear-gradient(135deg, var(--surface), #FFF0E6);
+  border: 1px solid var(--border);
+  padding: 16px 28px;
+  border-radius: var(--border-radius-lg) !important;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(232, 100, 42, 0.08);
+}
+
+.animated-streak {
+  animation: gentle-pulse 3s infinite alternate;
+}
+
+@keyframes gentle-pulse {
+  0% {
+    box-shadow: 0 4px 15px rgba(232, 100, 42, 0.05);
+  }
+
+  100% {
+    box-shadow: 0 4px 25px rgba(232, 100, 42, 0.18);
+  }
+}
+
+.streak-icon {
+  font-size: 36px;
+  animation: float 2.5s ease-in-out infinite;
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.streak-label {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--primary);
+}
+
+.streak-count {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-family: 'Playfair Display', serif;
+}
+
+/* =========================================================================
+   EQUAL SIZING GRID MAPPING
+   ========================================================================= */
+.homepage .content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  align-items: stretch;
+}
+
+.homepage .side-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  height: 100%;
+}
+
+/* Base dashboard structural card block panels (STAYS STATIC, NO HOVER SELECTION) */
+.card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-lg) !important;
+  overflow: hidden;
+  padding: 28px;
+  box-shadow: 0 4px 166px var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.card h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  color: var(--text-primary);
+}
+
+/* Internal placement link adapter rule */
+.card .movie-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.featured-card {
+  justify-content: flex-start;
+}
+
+.top-pick-card {
+  flex: 1;
+}
+
+.want-to-watch-card {
+  width: 100%;
+  margin-top: 24px;
+  height: auto;
+  /* size to its content instead of stretching to fill the column */
+}
+
+/* "+" add button in the Want to Watch header */
+.want-to-watch-card .card-header {
+  justify-content: space-between;
+}
+
+.wtw-add-btn {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: var(--border-radius-full);
+  background-color: var(--primary);
+  color: #fff;
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 10px rgba(232, 100, 42, 0.25);
+  transition: transform 0.15s ease, background-color 0.2s ease;
+}
+
+.wtw-add-btn:hover {
+  background-color: #cb531e;
+  transform: translateY(-1px);
+}
+
+/* Manual-add search box */
+.wtw-add-search {
+  position: relative;
+  margin-top: 4px;
+}
+
+.wtw-add-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-md);
+  background-color: var(--background);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+}
+
+.wtw-add-input:focus {
+  border-color: var(--primary);
+}
+
+.wtw-search-status {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+.wtw-dropdown {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-md);
+  background-color: var(--surface);
+  box-shadow: 0 8px 24px var(--shadow);
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.wtw-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.wtw-dropdown-item:hover {
+  background-color: var(--accent-light);
+}
+
+.wtw-dropdown-item.is-added {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.wtw-thumb {
+  width: 38px;
+  height: 57px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.wtw-thumb-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--accent-light);
+  font-size: 18px;
+}
+
+.wtw-dropdown-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.wtw-dropdown-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wtw-dropdown-meta {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.wtw-add-hint {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--primary);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.wtw-remove-button {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: var(--border-radius-full);
+  background-color: var(--primary);
+  color: #fff;
+  font-size: 20px;
+  line-height: 0;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 10px rgba(232, 100, 42, 0.25);
+  transition: transform 0.15s ease, background-color 0.2s ease;
+  margin-left: auto;
+
+}
+
+.wtw-remove-button:hover {
+  background-color: #cb531e;
+  transform: translateY(-1px);
+}
+
+
+
+/* Compact, centered empty state so the card doesn't look oversized when empty */
+.empty-want-to-watch-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 16px 20px;
+}
+
+.empty-want-to-watch-state .placeholder-mascot-img {
+  width: 64px;
+}
+
+.empty-want-to-watch-state h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.empty-want-to-watch-state p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  max-width: 340px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.want-to-watch-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.want-to-watch-mini-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  background-color: #ffffff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.want-to-watch-mini-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(232, 100, 42, 0.15);
+  border-color: var(--primary);
+}
+
+.mini-row-poster {
+  width: 80px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: var(--border-radius-lg);
+}
+
+/* Details area beside the poster */
+.mini-row-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+
+.mini-row-title {
+  font-family: 'playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #4a2e2b;
+  margin: 0;
+}
+
+
+/* =========================================================================
+   THEMED EMPTY STATE STYLING FOR DASHBOARD WIDGETS
+   ========================================================================= */
+.empty-watch-again-state,
+.empty-recommendation-state {
+  flex: 1;
+  /* Forces the dashed container to expand and fill the entire card height */
+  width: 100%;
+  box-sizing: border-box;
+  padding: 32px 24px;
+  background-color: var(--background);
+  border: 2px dashed var(--border);
+  border-radius: var(--border-radius-md);
+
+  /* Uses CSS Grid layout with proportional fractional (fr) sizing rows */
+  display: grid;
+  grid-template-rows: 1.2fr auto auto 1fr;
+  align-items: center;
+  justify-items: center;
+}
+
+.placeholder-mascot-img {
+  grid-row: 1;
+  width: 95px;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 12px;
+  animation: float 3s ease-in-out infinite;
+}
+
+.empty-watch-again-state h3,
+.empty-recommendation-state h3 {
+  grid-row: 2;
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  color: var(--text-primary);
+  margin: 0 0 12px 0;
+  padding: 0;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.empty-watch-again-state p,
+.empty-recommendation-state p {
+  grid-row: 3;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  max-width: 340px;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.empty-watch-again-state em,
+.empty-recommendation-state em {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+
+
+
+/* =========================================================================
+   ROUNDED RECTANGLE SKELETON (MATCHED TO MOVIECARD.CSS PROFILES)
+   ========================================================================= */
+.movie-card-skeleton-rect {
+  flex: 1;
+  width: 100%;
+
+  /* Matches .movie-card structural configurations perfectly */
+  min-height: 335px;
+  border-radius: var(--border-radius-lg);
+  box-sizing: border-box;
+  pointer-events: auto;
+  /* Active tracking for mouse events */
+
+  /* Smooth transition matching your actual loaded MovieCard transitions */
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+/* Hover effect on skeleton loader (Parity with movie-card hover state) */
+.movie-card-skeleton-rect:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(232, 100, 42, 0.15);
+  border-color: var(--primary, #E8642A) !important;
+}
+
+
+/* Warm cozy shimmer effect applied directly onto the structural frame base */
+.generic-pulse-animation {
+  animation: cozy-shimmer 1.6s ease-in-out infinite;
+  border: 1.5px solid var(--border);
+}
+
+@keyframes cozy-shimmer {
+  0% {
+    background-color: rgba(242, 208, 176, 0.15);
+    border-color: var(--border);
+  }
+
+  50% {
+    background-color: rgba(242, 166, 90, 0.22);
+    border-color: var(--secondary);
+  }
+
+  100% {
+    background-color: rgba(242, 208, 176, 0.15);
+    border-color: var(--border);
+  }
+}
+
+.mobile-bottom-spacer {
+  height: 100px;
+}
+
+/* =========================================
+   MOBILE RESPONSIVE
+   ========================================= */
+
+@media (min-width: 901px) {
+  .mobile-bottom-spacer {
+    display: none;
+  }
+}
+
+@media (max-width: 901px) {
+  .homepage {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+    overflow-anchor: none;
+  }
+
+  .homepage .main-content {
+    padding: 20px;
+    overflow: visible;
+    overflow-anchor: none;
+  }
+
+
+  /* Stack Watch Again on top of Top Recommendation instead of side by side */
+  .homepage .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Stack the welcome text above the streak card instead of side by side */
+  .homepage .hero-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 24px;
+
+  }
+
+  .homepage .hero-section::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  .homepage .hero-text h1 {
+    font-size: 22px;
+  }
+
+  .homepage .hero-text p {
+    font-size: 14px;
+  }
+
+  /* Let the streak card sit full width like a proper mobile banner */
+  .homepage .streak-card {
+    width: 100%;
+    justify-content: center;
+    padding: 16px 20px;
+    box-sizing: border-box;
+  }
+
+  .homepage .streak-count {
+    font-size: 24px;
+  }
+}
+
+
+/* =========================================================================
+   TABLET RESPONSIVE (ipad landscape)
+   ========================================================================= */
+
+@media (min-width: 901px) and (max-width: 1280px) {
+  .homepage .main-content {
+    padding: 32px;
+  }
+
+
+  .homepage .content-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px
+  }
+
+
+  .homepage .hero-section {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 24px;
+    height: auto;
+    overflow: visible;
+  }
+
+  .homepage .hero-text h1 {
+    font-size: 26px;
+    text-align: left;
+  }
+
+  .homepage .hero-text p {
+    font-size: 15px;
+    text-align: left;
+  }
+
+  .homepage .hero-section::before {
+    content: none !important;
+    display: none !important;
+  }
+
+
+  .homepage .streak-card {
+    width: fit-content;
+    justify-content: center;
+    padding: 16px 20px;
+    box-sizing: border-box;
+  }
+
+  .homepage .streak-count {
+    font-size: 26px;
+  }
+}

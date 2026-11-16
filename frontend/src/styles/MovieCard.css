@@ -1,0 +1,218 @@
+:root {
+  --radius-full: 999px;
+  --radius-lg: 20px;
+  --radius-md: 14px;
+}
+
+/* =========================================================================
+   THE MOVIE CARD CONTAINER (Outlined Box Configuration)
+   ========================================================================= */
+.movie-card {
+  background-color: var(--surface, #FFFFFF);
+  border: 1.5px solid var(--border, #F2D0B0);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  width: 100%;
+  height: 100%; /* Expands to perfectly match the layout panel height */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+/* Subtle elevation and micro-interaction on hover */
+.movie-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(232, 100, 42, 0.06);
+  border-color: var(--primary, #E8642A);
+}
+
+.movie-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-shrink: 0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.card-rating {
+  font-size: 13px;
+  font-weight: 700;
+  color: #f5a623;
+  background: #fff8eb;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+}
+
+.where-to-watch-badges {
+  display: flex;
+  gap: 6px;
+}
+
+.platform-badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--primary, #E8642A);
+  background-color: var(--accent-light, #FFF0E6);
+  padding: 3px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.movie-card-body {
+  display: flex;
+  flex-direction: row; 
+  align-items: flex-start;
+  gap: 20px;
+  flex: 1; /* Stretches the internal layout to look uniform across variations */
+  width: 100%;
+}
+
+/* =========================================================================
+   MOVIE CARD POSTER & FRAME ROUNDING
+   ========================================================================= */
+.movie-poster-frame {
+  flex-shrink: 0;
+  border-radius: var(--radius-md) !important;
+  overflow: hidden !important; /* Masks sharp asset image pixels */
+  box-shadow: 0 4px 12px rgba(61, 28, 2, 0.08);
+}
+
+.movie-poster {
+  width: 150px;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+  border-radius: var(--radius-md) !important;
+}
+
+/* Featured Horizontal Variant Layout */
+.featured-variant .movie-poster {
+  width: 160px; /* Synchronized sizing across variants for clean balance */
+  height: 230px;
+}
+
+/* Compact Sidebar Layout Variant */
+.compact-variant .movie-card-body {
+  flex-direction: row;
+  gap: 16px;
+}
+
+.compact-variant .movie-poster {
+  width: 160px; /* Locks matching size alignment profiles */
+  height: 230px;
+}
+
+/* =========================================================================
+   MOVIE CARD TYPOGRAPHY & INTERIOR SPACING
+   ========================================================================= */
+.movie-details {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+  min-width: 0;
+}
+
+.movie-genres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+  justify-content: flex-start;
+}
+
+.genre-tag {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background-color: var(--background, #FFF8F2);
+  border: 1px solid rgba(242, 208, 176, 0.5);
+  color: var(--text-secondary, #7A4A2A);
+  text-transform: uppercase;
+}
+
+.movie-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  color: var(--text-primary, #3D1C02);
+  margin-bottom: 4px;
+}
+
+.compact-variant .movie-title {
+  font-size: 26px; /* Normalized to maintain clean line parity */
+  margin-bottom: 4px;
+}
+
+.episode-subtitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary, #E8642A);
+  margin-bottom: 12px;
+}
+
+.movie-synopsis {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-secondary, #7A4A2A);
+  margin-bottom: 16px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex: 1; /* Pushes the layout buttons flush to the baseline regardless of text volume */
+}
+
+/* Buttons */
+.movie-details .primary-btn {
+  align-self: flex-start;
+  margin-top: auto; /* Forces interactive primary actions down to card floor uniformly */
+}
+
+.compact-variant .primary-btn {
+  margin-top: auto;
+  width: 100%;
+}
+
+/* Responsive view collapsing breakdown handles gracefully */
+@media (max-width: 1150px) {
+  .compact-variant .movie-card-body,
+  .featured-variant .movie-card-body {
+    flex-direction: column;
+    align-items: center;
+  }
+  .compact-variant .movie-poster-frame,
+  .compact-variant .movie-poster,
+  .featured-variant .movie-poster-frame,
+  .featured-variant .movie-poster {
+    width: 100%;
+    max-width: 200px;
+    height: 240px;
+  }
+}
+
+/* Phones: collapse every card (incl. the default/normal one used in the
+   Watch Log detail modal) so the poster sits above the text instead of
+   cramping beside it. */
+@media (max-width: 900px) {
+  .movie-card-body {
+    flex-direction: column;
+    align-items: center;
+  }
+  .movie-details {
+    width: 100%;
+  }
+  .movie-poster-frame,
+  .movie-poster {
+    width: 100%;
+    max-width: 200px;
+    height: 240px;
+  }
+}

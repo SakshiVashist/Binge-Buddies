@@ -1,0 +1,923 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap');
+
+:root {
+  --primary: #E8642A;
+  --secondary: #F2A65A;
+  --accent: #F06292;
+  --accent-light: #FADADD;
+  --background: #FFF8F2;
+  --surface: #FFFFFF;
+  --text-primary: #3D1C02;
+  --text-secondary: #7A4A2A;
+  --text-muted: #B07850;
+  --border: #F2D0B0;
+  --shadow: rgba(232, 100, 42, 0.12);
+  --success: #276237;
+  --success-bg: #D4EDDA;
+
+  /* Unified Global Radii tokens */
+  --border-radius-sm: 8px;
+  --border-radius-md: 14px;
+  --border-radius-lg: 20px;
+  --border-radius-full: 999px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* =========================================================================
+   STRUCTURAL MASTER BOX OVERFLOW CORRECTIONS
+   ========================================================================= */
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--background);
+  color: var(--text-primary);
+  overflow: hidden;
+  /* FIXED: Laches master layout window to stop a duplicate scroll tier */
+}
+
+body {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.profile-page {
+  display: flex;
+  width: 100%;
+  /* FIXED: Changed from 100vw to 100% to keep things inside browser bounds without scroll leaks */
+  height: 100vh;
+  overflow: hidden;
+  /* Keeps container bounds tightly locked */
+  background-color: var(--background);
+}
+
+/* --- Main content (ALIGNED WITH HOMEPAGE MAIN CONTENT WRAPPER) --- */
+.profile-main {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  overflow-y: auto;
+  /* This panel uniquely handles the screen's vertical scrolling */
+  overflow-x: hidden;
+  /* Safety latch to terminate bottom horizontal tracking completely */
+}
+
+/* Container limits wrapper to make sure elements pull into the center together */
+.profile-header,
+.profile-tabs,
+.profile-section {
+  width: 100%;
+  max-width: 1200px;
+  /* Centers layout alignment and restricts element blowouts */
+  margin-left: 0;
+  /* Pairs alignment straight against the sidebar container */
+  box-sizing: border-box;
+}
+
+/* =========================================================================
+   PROFILE HEADER (INTERACTIVE MODULAR CONTAINER WITH CUSTOM PICTURE TRIGGERS)
+   ========================================================================= */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-lg);
+  padding: 24px 32px;
+  box-shadow: 0 4px 20px var(--shadow);
+}
+
+/* Circular interaction framework for custom image container uploads */
+.profile-avatar-wrapper {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  border-radius: var(--border-radius-full);
+  overflow: hidden;
+  cursor: pointer;
+  display: block;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(232, 100, 42, 0.1);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.zoomable-avatar {
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.zoomable-avatar:hover {
+  transform: scale(1.1);
+}
+
+/* Exact visual match for the clean, soft-pink initial placeholder */
+.profile-avatar-fallback {
+  width: 100%;
+  height: 100%;
+  background-color: var(--accent-light);
+  /* Soft elegant pink style */
+  color: var(--primary);
+  /* High-contrast brand coral tone */
+  font-size: 32px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+}
+
+/* Clean frame rendering layout rules for user custom avatars */
+.profile-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Custom interactive photo modification overlay layer */
+.profile-avatar-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(61, 28, 2, 0.45);
+  /* Soft alpha-mask espresso overlay shadow */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.profile-avatar-wrapper:hover .profile-avatar-overlay {
+  opacity: 1;
+}
+
+.avatar-camera-icon {
+  font-size: 22px;
+  color: var(--primary);
+}
+
+.hidden-file-input {
+  display: none;
+}
+
+.avatar-error-msg {
+  color: var(--accent);
+  font-size: 12px;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.profile-name {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-family: 'Playfair Display', serif;
+  line-height: 1.2;
+}
+
+.profile-email-display {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+/* --- Navigation / Tabs --- */
+.profile-tabs {
+  display: flex;
+  gap: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.profile-tab {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 16px;
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: all 0.2s ease;
+}
+
+.profile-tab:hover {
+  color: var(--primary);
+}
+
+.tab-active {
+  color: var(--primary) !important;
+  border-bottom: 2px solid var(--primary) !important;
+  font-weight: 600;
+}
+
+/* --- Structural Content Sections --- */
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.section-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-top: -12px;
+}
+
+/* =========================================================================
+   SURFACE CARDS (MATCHES DASHBOARD MODULE SPECIFICATIONS)
+   ========================================================================= */
+.info-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-lg);
+  padding: 28px;
+  box-shadow: 0 4px 16px var(--shadow);
+  width: 100%;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+}
+
+.info-row-flex {
+  display: flex;
+  justify-content: space-between;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.align-start {
+  align-items: flex-start;
+}
+
+.label-with-gap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-label {
+  font-size: 14px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.info-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.info-value-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bold-text {
+  font-weight: 600;
+}
+
+.info-divider {
+  border-top: 1px solid var(--border);
+}
+
+/* --- Inline Username Custom Editor Layouts --- */
+.username-edit-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 60%;
+  align-items: flex-end;
+}
+
+.username-custom-input {
+  padding: 6px 12px;
+  border-radius: var(--border-radius-sm);
+  border: 1.5px solid var(--border);
+  width: 100%;
+  font-family: inherit;
+  outline: none;
+  color: var(--text-primary);
+  background-color: var(--surface);
+}
+
+.username-custom-input:focus {
+  border-color: var(--primary);
+}
+
+.username-error-text {
+  font-size: 12px;
+  margin: 0;
+  color: #c62828;
+}
+
+.button-group-gap {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-small {
+  padding: 4px 12px;
+  font-size: 12px;
+}
+
+.btn-small-round {
+  padding: 4px 12px;
+  font-size: 12px;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+}
+
+/* --- Password Locked Screen Context --- */
+.password-locked {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 32px;
+  text-align: center;
+}
+
+.password-locked-text {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.locked-icon {
+  font-size: 32px;
+  color: var(--text-muted);
+}
+
+.btn-primary-outline {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 10px 24px;
+  border-radius: var(--border-radius-full);
+  border: 2px solid var(--primary);
+  background: transparent;
+  color: var(--primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary-outline:hover {
+  background-color: var(--accent-light);
+  transform: translateY(-1px);
+}
+
+/* --- Interactive Forms Settings --- */
+.password-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.form-group input {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--text-primary);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-sm);
+  padding: 12px 16px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(232, 100, 42, 0.15);
+}
+
+.form-group input::placeholder {
+  color: var(--text-muted);
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+/* --- Custom CTA Interactive Elements --- */
+.btn-save {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 12px 28px;
+  border-radius: var(--border-radius-full);
+  border: none;
+  background-color: var(--primary);
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: fit-content;
+  box-shadow: 0 4px 12px rgba(232, 100, 42, 0.2);
+}
+
+.btn-save:hover {
+  background-color: var(--secondary);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(232, 100, 42, 0.3);
+}
+
+.btn-cancel {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 12px 28px;
+  border-radius: var(--border-radius-full);
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cancel:hover {
+  border-color: var(--text-muted);
+  color: var(--text-primary);
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+/* --- Alerts and Messaging Feedback --- */
+.error-msg {
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.success-msg {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--success);
+  background-color: var(--success-bg);
+  padding: 10px 16px;
+  border-radius: var(--border-radius-sm);
+  width: fit-content;
+}
+
+/* =========================================================================
+   USER INTEREST SELECTIONS / BLOCK PREFERENCES
+   ========================================================================= */
+.pref-block {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-lg);
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  box-shadow: 0 4px 16px var(--shadow);
+}
+
+.pref-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* --- Inline Filtering Tag Chips --- */
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 16px;
+  border-radius: var(--border-radius-full);
+  border: 1px solid var(--border);
+  background-color: var(--surface);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chip:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background-color: var(--background);
+}
+
+.chip-selected {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.chip-selected:hover {
+  background-color: var(--secondary);
+  border-color: var(--secondary);
+  color: #ffffff;
+}
+
+.chip-more {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: var(--border-radius-full);
+  border: 1.5px dashed var(--primary);
+  background-color: transparent;
+  color: var(--primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chip-more:hover {
+  background-color: var(--accent-light);
+  border-style: solid;
+}
+
+/* --- Custom Preference Dynamic Input Form Fields --- */
+.custom-input-wrap {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.custom-input-wrap input {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  padding: 6px 16px;
+  border-radius: var(--border-radius-full);
+  border: 1px solid var(--border);
+  outline: none;
+  transition: border-color 0.2s ease;
+  color: var(--text-primary);
+  background-color: var(--surface);
+}
+
+.custom-input-wrap input:focus {
+  border-color: var(--primary);
+}
+
+.btn-add {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 16px;
+  border-radius: var(--border-radius-full);
+  border: none;
+  background-color: var(--primary);
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-add:hover {
+  background-color: var(--secondary);
+}
+
+/* --- Loading States --- */
+.profile-avatar-loading-skeleton {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #f2d0b0 25%, #fadadd 50%, #f2d0b0 75%);
+  background-size: 200% 100%;
+  animation: loadingPulse 1.5s infinite linear;
+}
+
+@keyframes loadingPulse {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* =========================================================================
+   ENLARGED LIGHTBOX MODAL STRUCTURAL DESIGNS
+   ========================================================================= */
+.avatar-lightbox-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  cursor: zoom-out;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-circle-container {
+  width: 320px;
+  height: 320px;
+  border-radius: var(--border-radius-full);
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(61, 28, 2, 0.15);
+  border: 4px solid var(--surface);
+  background-color: var(--accent-light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.enlarged-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fallback-large-text {
+  font-size: 110px;
+  font-weight: bold;
+  color: var(--primary);
+  font-family: 'Playfair Display', serif;
+}
+
+/* =========================================================================
+   BINGE BUDDY CONTACT (opt-in)
+   ========================================================================= */
+.buddy-contact-block {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border, #F2D0B0);
+}
+
+.buddy-contact-block .section-title {
+  font-size: 18px;
+}
+
+.buddy-contact-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.buddy-contact-select {
+  padding: 10px 12px;
+  border: 1px solid var(--border, #F2D0B0);
+  border-radius: 10px;
+  background-color: #fff;
+  color: var(--text-primary, #3D1C02);
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+}
+
+.buddy-contact-input {
+  flex: 1;
+  min-width: 180px;
+  padding: 10px 14px;
+  border: 1px solid var(--border, #F2D0B0);
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+}
+
+.buddy-contact-input:focus,
+.buddy-contact-select:focus {
+  border-color: var(--primary, #E8642A);
+}
+
+/* Sign Out button on the Profile page — desktop uses the sidebar, so hide it there */
+.profile-signout-btn {
+  display: none;
+}
+.mobile-bottom-spacer {
+  height: 100px;
+}
+
+@media (min-width: 901px) {
+  .mobile-bottom-spacer {
+    display: none;
+  }
+}
+/*=================
+MOBILE RESPONSIVE
+===================*/
+
+@media (max-width: 900px) {
+  html,
+  body,
+  #root {
+    height: auto;
+    min-height: 100%;
+    overflow: visible;
+  }
+
+  .profile-page {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+
+  .profile-main {
+    overflow: visible;
+    overflow-anchor: none;
+    padding: 20px;
+  }
+  
+  .buddy-contact-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .profile-signout-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    align-self: flex-start;
+    margin: 4px 0 4px;
+    padding: 10px 20px;
+    border: 1px solid var(--primary, #E8642A);
+    border-radius: var(--border-radius-full, 999px);
+    background: var(--surface, #fff);
+    color: var(--primary, #E8642A);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .profile-signout-btn:hover {
+    background: var(--primary, #E8642A);
+    color: #fff;
+  }
+}
+
+/* =========================================================================
+   TABLET RESPONSIVE (ipad landscape)
+   ========================================================================= */
+
+@media (min-width: 901px) and (max-width:1280px) {
+  .profile-main {
+    padding: 32px;
+  }
+
+  .profile-signout-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    align-self: flex-start;
+    margin: 4px 0 4px;
+    padding: 10px 20px;
+    border: 1px solid var(--primary, #E8642A);
+    border-radius: var(--border-radius-full, 999px);
+    background: var(--surface, #fff);
+    color: var(--primary, #E8642A);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .profile-signout-btn:hover {
+    background: var(--primary, #E8642A);
+    color: #fff;
+  }
+}
+
+.contact-hint {
+  margin-top: 12px;
+}
+
+/* =========================================================================
+   FIND A BINGE BUDDY OPT-IN TOGGLE + DISCLAIMER
+   ========================================================================= */
+.optin-toggle {
+  position: relative;
+  width: 48px;
+  height: 26px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: var(--border-radius-full);
+  background-color: var(--border);
+  cursor: pointer;
+  padding: 0;
+  transition: background-color 0.2s ease;
+}
+
+.optin-toggle.is-on {
+  background-color: var(--primary);
+}
+
+.optin-toggle:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.optin-toggle-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.optin-toggle.is-on .optin-toggle-knob {
+  transform: translateX(22px);
+}
+
+.optin-disclaimer {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 12px 16px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-md);
+}
+
+.optin-disclaimer i {
+  color: var(--text-muted);
+  font-size: 16px;
+  margin-top: 1px;
+  flex-shrink: 0;
+}
+
+.optin-disclaimer.is-active {
+  color: var(--text-primary);
+  background-color: #fff4ec;
+  border-color: var(--secondary);
+}
+
+.optin-disclaimer.is-active i {
+  color: var(--primary);
+}

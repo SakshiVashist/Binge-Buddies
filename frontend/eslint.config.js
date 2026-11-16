@@ -1,0 +1,37 @@
+import js from '@eslint/js'
+import globals from 'globals'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
+import tseslint from 'typescript-eslint'
+import { defineConfig, globalIgnores } from 'eslint/config'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.recommended,
+      reactHooks.configs.flat.recommended,
+      reactRefresh.configs.vite,
+    ],
+    languageOptions: {
+      globals: globals.browser,
+    },
+    rules: {
+      // The new opinionated rule flags resetting state inside effects, which is
+      // a common, intentional pattern in this codebase.
+      'react-hooks/set-state-in-effect': 'off',
+      // Context files export their hook + Provider alongside each other.
+      'react-refresh/only-export-components': 'off',
+    },
+  },
+  {
+    //test files rely on 'as any' for vitest mocks which is a common pattern in this codebase, not worth flagging.
+    files: ['**/*.test.{ts,tsx}'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
+])
+

@@ -1,0 +1,1124 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap');
+
+:root {
+  --primary: #E8642A;
+  --secondary: #F2A65A;
+  --accent: #F06292;
+  --accent-light: #FADADD;
+  --background: #FFF8F2;
+  --surface: #FFFFFF;
+  --text-primary: #3D1C02;
+  --text-secondary: #7A4A2A;
+  --text-muted: #B07850;
+  --border: #F2D0B0;
+  --shadow: rgba(232, 100, 42, 0.12);
+
+  --border-radius-sm: 8px;
+  --border-radius-md: 14px;
+  --border-radius-lg: 20px;
+  --border-radius-full: 999px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--background);
+  color: var(--text-primary);
+  overflow: hidden;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+.log-page {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--background);
+}
+
+@media (max-width: 900px) {
+  .log-page {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+    flex-direction: column;
+  }
+}
+
+.log-main {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.hero-section,
+.stats-container,
+.filter-navigation-strip,
+.log-grid-container {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: 0;
+  box-sizing: border-box;
+}
+
+.hero-section {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-lg);
+  padding: 24px 32px;
+  box-shadow: 0 4px 20px var(--shadow);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hero-text h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  line-height: 1.2;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.hero-text p {
+  color: var(--text-secondary);
+  margin-top: 8px;
+  font-size: 16px;
+  max-width: 520px;
+  line-height: 1.5;
+}
+
+/* =========================================================================
+   ADD NEW LOG - REVERTED TO DASHED PINK OUTLINE STYLE (FIXED GLOW LAYER)
+   ========================================================================= */
+.add-log-card-trigger {
+  position: relative;
+  /* Establishes a localized stacking context */
+  z-index: 2;
+  /* Pulls the button interface in front of background radial highlights */
+  background-color: var(--surface);
+  border: 1.5px dashed var(--accent);
+  /* Elegant dashed accent pink border line */
+  border-radius: var(--border-radius-lg);
+  /* Smooth rounded corners */
+  padding: 14px 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px;
+  height: 52px;
+  /* Slim, elegant height to balance neatly inside the banner */
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(240, 98, 146, 0.05);
+}
+
+/* Strips out the nested inner box layout entirely */
+.add-log-card-inner {
+  background: transparent;
+  border: none;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  /* Aligns items cleanly on a single horizontal row */
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  /* Space between the plus sign and the label text */
+  width: auto;
+  height: auto;
+}
+
+/* Hides the stacked subtext tag since it's a single line now */
+.add-log-subtext {
+  display: none;
+}
+
+/* Main action label: Replicates "+ Add New Log" styling perfectly */
+.add-log-maintext {
+  font-family: 'Inter', sans-serif;
+  /* Clean sans-serif look matching your original element */
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  /* Deep brown readable text color */
+}
+
+/* Changes the text of the plus symbol dynamically to match the pink theme accent color */
+.add-log-maintext::before {
+  content: "+ ";
+  color: var(--accent);
+  font-weight: 800;
+}
+
+/* Interactive Hover Feedback States */
+.add-log-card-trigger:hover {
+  transform: translateY(-1px);
+  background-color: rgba(240, 98, 146, 0.03);
+  /* Extremely soft pink background overlay tint on hover */
+  border-style: solid;
+  /* Swaps to solid lines gracefully when highlighted */
+
+  /* Pushes a soft, clean drop shadow entirely behind the button card on focus hover */
+  box-shadow: 0 4px 14px rgba(240, 98, 146, 0.15);
+}
+
+.add-log-card-trigger:active {
+  transform: translateY(0);
+}
+
+/* =========================================================================
+   STATS LAYOUT MATRIX
+   ========================================================================= */
+.stats-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+
+.stat-card {
+  background: var(--surface);
+  padding: 16px;
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(242, 208, 176, 0.4);
+  min-height: 82px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.stat-card h3 {
+  font-size: 24px;
+  color: #ff7b54;
+  margin-bottom: 2px;
+}
+
+.stat-card h3.highlight-genre {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.2;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+.stat-card p {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+/* =========================================================================
+   SUGGESTED FILTERS STRIP DESIGN
+   ========================================================================= */
+.filter-navigation-strip {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-lg);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: 0 4px 20px rgba(232, 100, 42, 0.03);
+  /* Extremely subtle warm ambient glow */
+}
+
+/* Input layout wrapper */
+.filter-search-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+  flex: 1;
+}
+
+.search-icon {
+  position: absolute;
+  left: 16px;
+  font-size: 14px;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.filter-search-input {
+  width: 100%;
+  padding: 11px 16px 11px 44px;
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-md);
+  /* Matching your cards' border radius perfectly */
+  background-color: var(--background);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Beautiful Focus State Interaction */
+.filter-search-input:focus {
+  border-color: var(--secondary);
+  background-color: var(--surface);
+  box-shadow: 0 0 0 4px rgba(242, 166, 90, 0.12);
+}
+
+/* Right alignment button container */
+.filter-button-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* Vibrant primary brand action button */
+.apply-filters-btn {
+  background-color: var(--primary);
+  border: none;
+  color: var(--surface);
+  padding: 11px 22px;
+  border-radius: var(--border-radius-full);
+  /* Keeps it a distinct pill shape */
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(232, 100, 42, 0.15);
+  transition: all 0.2s ease;
+}
+
+.apply-filters-btn:hover {
+  background-color: #d1531d;
+  /* Slightly darker rich burnt orange */
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(232, 100, 42, 0.25);
+}
+
+.apply-filters-btn:active {
+  transform: translateY(0);
+}
+
+/* Underlined context-aware delete shortcut button */
+.clear-filters-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 12px;
+  transition: all 0.2s ease;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.clear-filters-btn:hover {
+  color: var(--accent);
+}
+
+/* =========================================================================
+   GRID AND LOG ITEM CARDS
+   ========================================================================= */
+.log-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 24px;
+  padding: 24px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 4px 16px var(--shadow);
+}
+
+.compact-log-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(61, 28, 2, 0.03);
+}
+
+.compact-log-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px var(--shadow);
+}
+
+.compact-poster-wrapper {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  background-color: var(--background);
+}
+
+.compact-poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.compact-title {
+  padding: 12px 8px;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =========================================================================
+   MODAL INTERFACE RULES
+   ========================================================================= */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(61, 28, 2, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal-content {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-lg);
+  width: 100%;
+  max-width: 520px;
+  padding: 32px;
+  box-shadow: 0 12px 36px var(--shadow);
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+  gap: 20px;
+  animation: modalSlideIn 0.25s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    transform: translateY(15px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+  padding: 4px;
+}
+
+.close-btn:hover {
+  color: var(--accent);
+}
+
+.modal-search-input {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-md);
+  background-color: var(--background);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.modal-search-input:focus {
+  border-color: var(--primary);
+  background-color: var(--surface);
+  box-shadow: 0 0 0 3px rgba(232, 100, 42, 0.1);
+}
+
+.search-results-list {
+  overflow-y: auto;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-right: 6px;
+}
+
+.search-results-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.search-results-list::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: var(--border-radius-full);
+}
+
+.search-result-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  border: 1px solid transparent;
+  border-radius: var(--border-radius-md);
+  transition: all 0.2s ease;
+}
+
+.search-result-item:hover {
+  background-color: rgba(242, 166, 90, 0.06);
+  border-color: var(--border);
+}
+
+.search-item-img {
+  width: 48px;
+  height: 68px;
+  object-fit: cover;
+  border-radius: var(--border-radius-sm);
+  background-color: var(--background);
+  border: 1px solid rgba(242, 208, 176, 0.3);
+}
+
+.search-item-info {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.search-item-info h4 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.search-item-info p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.select-movie-btn {
+  background-color: var(--surface);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 8px 16px;
+  border-radius: var(--border-radius-full);
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.select-movie-btn:hover {
+  background-color: var(--accent);
+  color: var(--surface);
+  box-shadow: 0 4px 12px rgba(240, 98, 146, 0.2);
+}
+
+.no-results {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+  padding: 24px 0;
+}
+
+.empty-log-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px var(--border-radius-lg);
+  color: var(--text-muted);
+}
+
+.empty-log-state p:first-of-type {
+  font-size: 16px;
+  margin: 0 0 8px 0;
+}
+
+.empty-log-state p:last-of-type {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.mobile-bottom-spacer {
+  height: 100px;
+}
+
+@media (min-width: 901px) {
+  .mobile-bottom-spacer {
+    display: none;
+  }
+}
+
+.detail-modal-content {
+  max-width: 680px;
+  width: 95%;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-modal-body {
+  overflow-y: auto;
+  padding-right: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.detail-modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.detail-modal-body::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: var(--border-radius-full);
+}
+
+.user-notes-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-top: 1px dashed var(--border);
+  padding-top: 20px;
+  margin-bottom: 8px;
+}
+
+.user-notes-section h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.rating-input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+  margin: 8px 0;
+}
+
+.star-rating-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.split-star-box {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  font-size: 40px;
+  line-height: 1;
+  color: var(--border);
+  user-select: none;
+  transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.star-display-icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.split-star-box.full {
+  color: #ffbc0b;
+}
+
+.split-star-box.half::after {
+  content: "★";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: #ffbc0b;
+  clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+  pointer-events: none;
+}
+
+.star-hitbox {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 2;
+}
+
+.left-hitbox {
+  left: 0;
+}
+
+.right-hitbox {
+  left: 50%;
+}
+
+.split-star-box:hover {
+  transform: scale(1.25);
+}
+
+.user-notes-input {
+  width: 100%;
+  padding: 12px;
+  box-sizing: border-box;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border);
+  background-color: var(--background);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.user-notes-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(232, 100, 42, 0.08);
+}
+
+.save-notes-btn {
+  align-self: flex-start;
+  padding: 10px 24px;
+  background-color: var(--primary);
+  color: var(--surface);
+  border: none;
+  border-radius: var(--border-radius-full);
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.save-notes-btn:hover {
+  background-color: #d1531d;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(232, 100, 42, 0.2);
+}
+
+.save-notes-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* =========================================================================
+   ANIMATED SHIMMER SKELETON REPLICATION
+   ========================================================================= */
+@keyframes cozy-shimmer {
+  0% {
+    background-color: rgba(242, 208, 176, 0.15);
+  }
+
+  50% {
+    background-color: rgba(242, 166, 90, 0.3);
+  }
+
+  /* Enhanced visibility mid-wave */
+  100% {
+    background-color: rgba(242, 208, 176, 0.15);
+  }
+}
+
+.skeleton {
+  animation: cozy-shimmer 1.6s ease-in-out infinite;
+  border: 1px solid rgba(242, 208, 176, 0.35);
+}
+
+/* Structural Skeletons Layout Alignments */
+.stat-card-skeleton,
+.filter-strip-skeleton,
+.movie-card-skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: rgba(242, 208, 176, 0.15);
+}
+
+.stat-card-skeleton {
+  border-radius: 18px;
+  height: 82px;
+}
+
+.filter-strip-skeleton {
+  width: 100%;
+  height: 64px;
+  border-radius: var(--border-radius-lg);
+  margin: 0;
+}
+
+.movie-card-skeleton {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  border-radius: var(--border-radius-md);
+}
+
+/* Emulates the empty title slot overlay layout baseline of your cards */
+.movie-card-skeleton::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 42px;
+  background-color: var(--surface);
+  border-top: 1px solid rgba(242, 208, 176, 0.25);
+  opacity: 0.85;
+}
+
+/* =========================================================================
+   MODAL ACTIONS & REMOVAL LAYOUT ADDITIONS
+   ========================================================================= */
+.modal-action-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  width: 100%;
+}
+
+/* Modifying standard button flex sizes to fit side-by-side perfectly */
+.modal-action-row .save-notes-btn {
+  flex: 1;
+  align-self: unset;
+  /* Overrides the default flex-start layout assignment */
+  text-align: center;
+}
+
+.remove-log-btn {
+  flex: 1;
+  background-color: #dc3545;
+  /* Clean accessible red alert background */
+  color: #ffffff;
+  border: none;
+  border-radius: var(--border-radius-full);
+  /* Elegant pill shape matching Save button */
+  padding: 10px 16px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.remove-log-btn:hover {
+  background-color: #bd2130;
+  /* Deep warning red on hover interaction */
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.25);
+}
+
+.remove-log-btn:active {
+  transform: translateY(0);
+}
+
+.remove-log-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* =========================================================================
+   MOBILE RESPONSIVE
+   ========================================================================= */
+@media (max-width: 600px) {
+  .log-main {
+    padding: 12px;
+    padding-bottom: 110px;
+    flex: none;
+    width: 100%;
+    overflow: visible;
+  }
+
+  /* Top bar: stack the title above a full-width "Add New Log" button */
+  .log-page .hero-section {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .log-page .hero-section::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  .log-page .hero-text h1 {
+    font-size: 20px;
+  }
+
+  .log-page .hero-text p {
+    font-size: 13px;
+  }
+
+  .log-page .add-log-card-trigger {
+    width: 100%;
+  }
+
+  /* Stats bar: 2x2 grid instead of a cramped single row of four */
+  .log-page .stats-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .log-page .stat-card h3 {
+    font-size: 18px;
+  }
+
+  .log-page .stat-card h3.highlight-genre {
+    font-size: 14px;
+  }
+
+  /* Filter strip: stack search and buttons vertically */
+  .log-page .filter-navigation-strip {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 10px 14px;
+  }
+
+  .log-page .filter-button-group {
+    display: flex;
+    gap: 8px;
+  }
+
+  .log-page .filter-button-group button {
+    flex: 1;
+  }
+
+  /* Log grid: 3 columns on mobile portrait */
+  .log-page .log-grid-container {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .log-page .compact-title {
+    font-size: 10px;
+    padding: 6px 3px;
+  }
+
+  /* Media Profile Details modal: tighter padding + full-width action buttons */
+  .modal-content {
+    padding: 16px;
+  }
+
+  .detail-modal-content {
+    width: 95%;
+    max-height: 90vh;
+  }
+
+  .modal-header h2 {
+    font-size: 18px;
+  }
+
+  .modal-action-row {
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+  .log-main {
+    padding: 20px;
+    padding-bottom: 110px;
+    flex: none;
+    width: 100%;
+    overflow: visible;
+  }
+
+  /* Top bar: stack the title above a full-width "Add New Log" button */
+  .log-page .hero-section {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    padding: 20px;
+  }
+
+  .log-page .hero-text h1 {
+    font-size: 22px;
+  }
+
+  .log-page .hero-text p {
+    font-size: 14px;
+  }
+
+  .log-page .add-log-card-trigger {
+    width: 100%;
+  }
+
+  /* Stats bar: 2x2 grid instead of a cramped single row of four */
+  .log-page .stats-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .log-page .stat-card h3 {
+    font-size: 20px;
+  }
+
+  .log-page .stat-card h3.highlight-genre {
+    font-size: 15px;
+  }
+
+  /* Filter strip: stack search and buttons vertically */
+  .log-page .filter-navigation-strip {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .log-page .filter-button-group {
+    display: flex;
+    gap: 10px;
+  }
+
+  .log-page .filter-button-group button {
+    flex: 1;
+  }
+
+  /* Log grid: 3 columns on larger mobile/tablet */
+  .log-page .log-grid-container {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .log-page .compact-title {
+    font-size: 11px;
+    padding: 8px 4px;
+  }
+
+  /* Media Profile Details modal: tighter padding + full-width action buttons */
+  .modal-content {
+    padding: 20px;
+  }
+
+  .detail-modal-content {
+    width: 92%;
+    max-height: 88vh;
+  }
+
+  .modal-header h2 {
+    font-size: 20px;
+  }
+
+  .modal-action-row {
+    flex-direction: column;
+  }
+}
+
+/* =========================================================================
+   TABLET RESPONSIVE (ipad landscape)
+   ========================================================================= */
+@media (min-width: 901px) and (max-width:1280px) {
+  .log-main {
+    padding: 32px;
+  }
+
+  .log-page .hero-section {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 24px;
+    height: auto;
+    overflow: visible;
+   
+  }
+
+  .log-page .hero-text {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .log-page .hero-text h1 {
+    font-size: 26px;
+    text-align: left;
+  }
+
+  .log-page .hero-text p {
+    font-size: 15px;
+    text-align: left;
+  }
+
+  .log-page .hero-section::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  .log-page .add-log-card-trigger {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .log-page .stat-card {
+    padding: 14px;
+  }
+
+  .log-page .filter-navigation-strip {
+    padding: 12px 16px;
+    gap: 12px;
+  }
+
+  .log-grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 18px;
+    padding: 20px;
+  }
+
+}

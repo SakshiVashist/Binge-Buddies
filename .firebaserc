@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "binge-buddies-17abf"
+  },
+  "targets": {
+    "binge-buddies-17abf": {
+      "hosting": {
+        "default": [
+          "binge-buddies-17abf"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

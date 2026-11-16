@@ -1,0 +1,1086 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap');
+
+:root {
+  --primary: #E8642A;
+  --secondary: #F2A65A;
+  --accent: #F06292;
+  --accent-light: #FADADD;
+  --background: #FFF8F2;
+  --surface: #FFFFFF;
+  --text-primary: #3D1C02;
+  --text-secondary: #7A4A2A;
+  --text-muted: #B07850;
+  --border: #F2D0B0;
+  --shadow: rgba(232, 100, 42, 0.12);
+  --border-radius-sm: 6px;
+  --border-radius-md: 12px;
+  --border-radius-lg: 20px;
+  --border-radius-full: 999px;
+}
+
+
+
+/* =========================================================================
+   STRUCTURAL MASTER BOX OVERFLOW CORRECTIONS
+   ========================================================================= */
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--background);
+  color: var(--text-primary);
+  overflow: hidden;
+  /* FIXED: Prevents browser root window from adding an accidental 2nd scroll track */
+}
+
+/* =========================================
+   LAYOUT ALIGNMENT SETUP
+   ========================================= */
+.community-page {
+  width: 100%;
+  /* FIXED: Changed from 100vw to 100% to keep things inside browser bounds without scroll leaks */
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+  /* Keeps container bounds tightly locked */
+  background-color: var(--background);
+  font-family: 'Inter', sans-serif;
+  color: var(--text-primary);
+}
+
+.community-page .main-content {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  overflow-y: auto;
+  /* This panel uniquely handles the screen's vertical scrolling */
+  overflow-x: hidden;
+  /* Safety latch to terminate bottom horizontal tracking completely */
+  background-color: var(--background);
+}
+
+/* =========================================
+   HERO BANNER SECTION
+   ========================================= */
+.community-page .hero-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--surface);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border);
+  padding: 24px 32px;
+  box-shadow: 0 8px 24px var(--shadow);
+  position: relative;
+  overflow: hidden;
+  min-height: max-content;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.community-page .hero-section::before {
+  content: none !important;
+  display: none !important;
+}
+
+.community-page .hero-text h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+/* ensure "community hub" is black */
+.community-page .hero-text h1 span {
+  color: #000000 !important;
+}
+
+.community-page .hero-text p {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 520px;
+  line-height: 1.5;
+  margin-top: 8px;
+}
+
+/* =========================================
+   DASHBOARD 2-COLUMN GRID STRUCTURE
+   ========================================= */
+.community-page .content-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.community-page .community-main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Share Something + Trending sit side by side in a top row */
+.community-page .side-cards {
+  order: -1;
+  /* pull the two cards above the posts feed */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  /* both cards share the taller card's height */
+  gap: 28px;
+  height: auto;
+  /* neutralize leaked global .side-cards { height:100% } from HomePage.css */
+}
+
+.community-page .side-cards>.card {
+  flex: 1;
+  /* equal-width halves */
+  min-width: 0;
+  height: auto;
+  /* neutralize leaked global .card { height:100% } */
+  overflow: visible;
+  /* neutralize leaked global .card { overflow:hidden } that clipped the Trending items */
+}
+
+/* Keep the buttons centred as a group, with a wider gap between them */
+.community-page .share-card .action-button-group {
+  flex: 1;
+  justify-content: center;
+  gap: 22px;
+}
+
+/* =========================================
+   FEED TOOLBAR — SEARCH + FILTER
+   ========================================= */
+.community-page .feed-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.community-page .feed-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 240px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-full);
+  padding: 10px 16px;
+  transition: border-color 0.2s ease;
+}
+
+.community-page .feed-search .feed-search-icon {
+  display: block;
+  width: 18px;
+  height: 18px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.community-page .feed-search input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  box-shadow: none;
+  padding: 2px 0;
+  line-height: 1.6;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text-primary);
+  caret-color: var(--primary);
+}
+
+/* Override the global input:focus highlight from LoginPage.css */
+.community-page .feed-search input:focus {
+  border: none;
+  box-shadow: none;
+  outline: none;
+}
+
+.community-page .feed-search input::placeholder {
+  color: var(--text-muted);
+}
+
+.community-page .feed-search-clear {
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 2px;
+}
+
+.community-page .feed-search-clear:hover {
+  color: var(--primary);
+}
+
+.community-page .feed-filters {
+  display: flex;
+  gap: 8px;
+  background-color: var(--accent-light);
+  padding: 4px;
+  border-radius: var(--border-radius-full);
+}
+
+.community-page .feed-filter-btn {
+  border: none;
+  background: none;
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: var(--border-radius-full);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.community-page .feed-filter-btn:hover {
+  color: var(--primary);
+}
+
+.community-page .feed-filter-btn.active {
+  background-color: var(--primary);
+  color: #fff;
+}
+
+/* Two posts per row, matching the side-card spacing */
+.community-page .post-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+/* Empty-state message spans the full width */
+.community-page .post-list .empty-feed {
+  grid-column: 1 / -1;
+}
+
+/* Community page card */
+.community-page .card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-lg);
+  padding: 28px;
+  box-shadow: 0 8px 24px var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.community-page .card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(232, 100, 42, 0.08);
+}
+
+.community-page .card h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+/* =========================================
+   POST INTERFACE LOGICS
+   ========================================= */
+.community-page .card-header-post {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.community-page .user-profile-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.community-page .post-avatar {
+  width: 40px;
+  height: 40px;
+  background-color: var(--accent-light);
+  color: var(--primary);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius-full);
+  border: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.community-page .post-user {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.community-page .post-time {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.community-page .post-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  color: var(--text-primary);
+  margin-top: 4px;
+}
+
+.community-page .post-card {
+  cursor: pointer;
+}
+
+.community-page .synopsis-short {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.community-page .post-footer {
+  display: flex;
+  gap: 16px;
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+  margin-top: 4px;
+  border: none !important;
+}
+
+.community-page .post-stat {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+/* =========================================
+   BUTTON STYLING SYSTEM
+   ========================================= */
+.community-page .primary-btn,
+.community-page .secondary-btn {
+  padding: 12px 24px;
+  border-radius: var(--border-radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.community-page .primary-btn {
+  background-color: var(--primary);
+  color: #fff;
+  align-self: flex-start;
+  box-shadow: 0 4px 12px rgba(232, 100, 42, 0.25);
+}
+
+.community-page .primary-btn:hover {
+  background-color: #cb531e;
+  transform: translateY(-2px);
+}
+
+.community-page .secondary-btn {
+  background-color: var(--accent-light);
+  color: var(--primary);
+  width: 100%;
+}
+
+.community-page .secondary-btn:hover {
+  background-color: #fedfd0;
+}
+
+.community-page .btn-back {
+  align-self: flex-start;
+  width: max-content;
+  padding: 8px 16px;
+  margin-bottom: 8px;
+}
+
+.community-page .action-button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.community-page .action-button-group .primary-btn {
+  width: 100%;
+}
+
+.community-page .comment-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+}
+
+.community-page .episode-subtitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--primary);
+}
+
+.community-page .comment-input {
+  width: 100%;
+  min-height: 90px;
+  padding: 12px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border);
+  background-color: var(--background);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 14px;
+  resize: vertical;
+}
+
+.community-page .comment-input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.community-page .trending-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.community-page .trending-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 4px 0;
+}
+
+.community-page .time-left {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+  background: var(--accent-light);
+  padding: 4px 10px;
+  border-radius: var(--border-radius-full);
+}
+
+.community-page .trending-title {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  font-weight: 500;
+  color: var(--text-secondary);
+  font-size: 15px;
+}
+
+.community-page .icon-like-btn {
+  color: var(--text-secondary);
+  transition: color 0.2s ease, transform 0.1s ease;
+  border: none;
+  background: none;
+}
+
+.community-page .icon-like-btn:hover {
+  color: var(--primary);
+  transform: scale(1.05);
+}
+
+.community-page .icon-like-btn.is-liked {
+  color: var(--primary) !important;
+  /* Turns orange when liked*/
+}
+
+/* =========================================
+   POST TYPE COLOUR CODING
+   ========================================= */
+/* Reflections — warm orange accent (uniform 1px border keeps padding identical) */
+.community-page .post-card--reflection {
+  background-color: #FFFBF7;
+  border-color: var(--primary);
+}
+
+/* Recommendations — pink accent to set them apart at a glance */
+.community-page .post-card--recommendation {
+  background-color: #FFF6F9;
+  border-color: var(--accent);
+}
+
+.community-page .post-card--recommendation .media-badge {
+  color: var(--accent);
+  background-color: var(--accent-light);
+}
+
+/* =========================================
+   LIKE / COMMENT ACTION ICONS
+   ========================================= */
+.community-page .post-footer {
+  align-items: center;
+}
+
+.community-page .post-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.community-page .action-icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.community-page .count-text {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.community-page .icon-comment-display {
+  color: var(--text-secondary);
+}
+
+.community-page .primary-btn .action-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* =========================================
+   AVATAR IMAGE SUPPORT
+   ========================================= */
+.community-page .post-avatar {
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.community-page .post-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--border-radius-full);
+}
+
+/* =========================================
+   DELETE BUTTONS
+   ========================================= */
+.community-page .delete-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 17px;
+  color: var(--text-muted);
+  padding: 4px 6px;
+  border-radius: var(--border-radius-sm);
+  transition: color 0.2s ease, background-color 0.2s ease;
+  line-height: 1;
+}
+
+.community-page .delete-btn:hover {
+  color: var(--primary);
+  background-color: var(--accent-light);
+}
+
+.community-page .trash-icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.community-page .comment-delete .trash-icon {
+  width: 15px;
+  height: 15px;
+}
+
+/* =========================================
+   COMPOSE FORM
+   ========================================= */
+.community-page .compose-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.community-page .compose-title-input {
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border);
+  background-color: var(--background);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.community-page .compose-title-input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.community-page .primary-btn:disabled,
+.community-page .secondary-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* =========================================
+   COMMENTS LIST
+   ========================================= */
+.community-page .comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.community-page .no-comments {
+  font-size: 14px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.community-page .comment-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.community-page .comment-body {
+  flex: 1;
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-md);
+  padding: 10px 14px;
+}
+
+.community-page .comment-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.community-page .comment-user {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+.community-page .comment-time {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.community-page .comment-delete {
+  margin-left: auto;
+  font-size: 13px;
+}
+
+.community-page .comment-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* =========================================
+   EMPTY STATES
+   ========================================= */
+.community-page .empty-feed {
+  align-items: center;
+  text-align: center;
+  color: var(--text-muted);
+  padding: 40px 28px;
+}
+
+/* =========================================
+   RECOMMENDATION — MEDIA SEARCH & PREVIEW
+   ========================================= */
+.community-page .media-poster-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--accent-light);
+  font-size: 22px;
+}
+
+/* Search box + dropdown */
+.community-page .media-search {
+  position: relative;
+}
+
+.community-page .media-search-status {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+.community-page .media-dropdown {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-md);
+  background-color: var(--surface);
+  box-shadow: 0 8px 24px var(--shadow);
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.community-page .media-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.community-page .media-dropdown-item:hover {
+  background-color: var(--accent-light);
+}
+
+.community-page .media-thumb {
+  width: 40px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: var(--border-radius-sm);
+  flex-shrink: 0;
+}
+
+.community-page .media-dropdown-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.community-page .media-dropdown-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.community-page .media-dropdown-meta {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Media badge (Movie / TV Show) */
+.community-page .media-badge {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--primary);
+  background-color: var(--accent-light);
+  padding: 3px 10px;
+  border-radius: var(--border-radius-full);
+  margin-bottom: 6px;
+}
+
+/* Selected media preview in compose form */
+.community-page .selected-media {
+  display: flex;
+  gap: 16px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-md);
+  background-color: var(--background);
+}
+
+.community-page .selected-media-poster {
+  width: 80px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: var(--border-radius-sm);
+  flex-shrink: 0;
+}
+
+.community-page .selected-media-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.community-page .selected-media-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.community-page .selected-media-year {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.community-page .change-media-btn {
+  align-self: flex-start;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: var(--border-radius-full);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.community-page .change-media-btn:hover {
+  background-color: var(--accent-light);
+}
+
+/* Recommendation preview inside a feed card */
+.community-page .rec-preview {
+  display: flex;
+  gap: 14px;
+}
+
+.community-page .rec-poster {
+  width: 64px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: var(--border-radius-sm);
+  flex-shrink: 0;
+}
+
+.community-page .rec-preview-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.community-page .rec-year {
+  font-weight: 400;
+  font-size: 15px;
+  color: var(--text-muted);
+}
+
+/* Recommendation detail in expanded view */
+.community-page .rec-detail {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-md);
+  background-color: var(--background);
+}
+
+.community-page .rec-detail-poster {
+  width: 90px;
+  height: 135px;
+  object-fit: cover;
+  border-radius: var(--border-radius-sm);
+  flex-shrink: 0;
+}
+
+.community-page .rec-detail-year {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* =========================================
+   TRENDING — RECOMMENDED TITLES
+   ========================================= */
+.community-page .trending-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: -8px;
+  margin-bottom: 4px;
+}
+
+.community-page .no-trending {
+  font-size: 14px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.community-page .trending-poster {
+  width: 32px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: var(--border-radius-sm);
+  flex-shrink: 0;
+}
+
+.community-page .trending-count {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+  white-space: nowrap;
+}
+
+/* =========================================
+   MOBILE RESPONSIVE
+   ========================================= */
+@media (max-width: 900px) {
+  .community-page .main-content {
+    padding: 20px;
+  }
+
+  /* Stack the two cards as plain blocks (not flex) so each sizes to its own
+     content. Flexbox was splitting the column height between them, which left
+     whitespace in the Trending card and made it overflow onto the posts. */
+  .community-page .side-cards {
+    display: block;
+  }
+
+  .community-page .side-cards>.card+.card {
+    margin-top: 28px;
+  }
+
+  /* Keep the Share card's buttons compact instead of stretching to fill space */
+  .community-page .share-card .action-button-group {
+    flex: 0 0 auto;
+  }
+
+  /* Keep trending rows compact and prevent titles from overflowing */
+  .community-page .trending-item {
+    gap: 10px;
+  }
+
+  .community-page .trending-title {
+    font-size: 14px;
+  }
+
+  .community-page .time-left {
+    flex-shrink: 0;
+  }
+
+  /* One post per row so cards keep their width and text wraps cleanly */
+  .community-page .post-list {
+    grid-template-columns: 1fr;
+  }
+
+  /* Filter pills sit below the search bar */
+  .community-page .feed-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .community-page .feed-filters {
+    justify-content: space-between;
+  }
+
+  .community-page .hero-text h1 {
+    font-size: 22px;
+  }
+}
+
+/* =========================================================================
+   TABLET RESPONSIVE (ipad landscape)
+   ========================================================================= */
+
+@media (min-width: 901px) and (max-width: 1280px) {
+  .community-page .main-content {
+    padding: 32px;
+  }
+
+  .community-page .hero-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 24px;
+    height: auto;
+    overflow: visible;
+  }
+
+  .community-page .hero-text {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .community-page .hero-text h1 {
+    font-size: 26px;
+    text-align: left;
+  }
+
+  .community-page .hero-text p {
+    font-size: 15px;
+    text-align: left;
+  }
+
+  .community-page .side-cards {
+    gap: 20px;
+  }
+
+  .community-page .card {
+    padding: 20px;
+  }
+
+  .community-page .card h2 {
+    font-size: 21px;
+  }
+
+  .community-page .post-list {
+    gap: 20px;
+  }
+
+  .community-page .feed-toolbar {
+    gap: 12px;
+  }
+
+  .community-page .feed-search {
+    min-width: 200px;
+  }
+}
+
+.mobile-bottom-spacer {
+  height: 100px;
+}
+
+@media (min-width: 901px) {
+  .mobile-bottom-spacer {
+    display: none;
+  }
+}
+
+/* =========================================================================
+   MOBILE RESPONSIVE - Must be at the END to override desktop styles
+   ========================================================================= */
+@media (max-width: 900px) {
+  html, body, #root {
+    overflow: auto !important;
+    height: auto !important;
+    min-height: 100vh !important;
+  }
+  
+  .community-page {
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow: visible !important;
+    flex-direction: column !important;
+  }
+  
+  .community-page .main-content {
+    flex: 1 0 auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    padding-bottom: 110px !important;
+  }
+}
